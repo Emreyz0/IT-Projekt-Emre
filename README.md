@@ -7,14 +7,18 @@ Kleines eigenes Projekt mit Python (Flask).
 - Einfache Statistik
 
 ## Starten der App (lokal)
-1. Python 3.x installieren  
+1. Python 3.x installieren
    https://www.python.org/downloads/
 2. Projekt entpacken
-3. CMD / Terminal öffnen und in den Projektordner wechseln:
+3. CMD öffnen und in den Projektordner wechseln:
    cd Pfad\zum\Projektordner
-4. Flask installieren:
+4. Virtuelle Umgebung erstellen:
+   python -m venv venv
+5. Virtuelle Umgebung aktivieren:
+   venv\Scripts\activate
+6. Flask installieren:
    pip install flask
-5. App starten:
+7. App starten:
    python app.py
-6. Browser öffnen:
+8. Browser öffnen:
    http://127.0.0.1:5000
