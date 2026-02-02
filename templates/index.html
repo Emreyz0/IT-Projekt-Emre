@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>🔥 IT-Management-Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e8f0f7;
+            margin: 30px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 6px;
+            font-size: 14px;
+            margin-right: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"], button {
+            padding: 5px 12px;
+            font-size: 14px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        input[type="submit"]:hover, button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            background-color: white;
+            box-shadow: 0px 3px 8px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:hover {
+            background-color: #dce7f2;
+        }
+        td button {
+            background-color: #e74c3c;
+            padding: 4px 8px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+        td button:hover {
+            background-color: #c0392b;
+        }
+        #searchInput, #searchDevice {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 300px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .stat-green {
+            color: green;
+            font-weight: bold;
+        }
+        .stat-red {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Mein IT-Management-Tool</h1>
+    <p>Benutzer & Geräte verwalten – alles live und interaktiv!</p>
+
+    <!-- Benutzer hinzufügen -->
+    <h2>Benutzer hinzufügen</h2>
+    <form action="/add_user" method="post">
+        Name: <input type="text" name="name" required>
+        <input type="submit" value="Hinzufügen">
+    </form>
+
+    <input type="text" id="searchInput" onkeyup="searchTable('userTable', 'searchInput')" placeholder="Benutzer suchen...">
+
+    {% if users %}
+    <table id="userTable">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Aktion</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ user }}</td>
+            <td>
+                <form action="/delete_user" method="post" style="display:inline;">
+                    <input type="hidden" name="name" value="{{ user }}">
+                    <button type="submit">🗑️</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>Keine Benutzer vorhanden.</p>
+    {% endif %}
+
+    <!-- Geräte hinzufügen -->
+    <h2>Gerät hinzufügen</h2>
+    <form action="/add_device" method="post">
+        Gerät: <input type="text" name="device" required>
+        <input type="submit" value="Hinzufügen">
+    </form>
+
+    <input type="text" id="searchDevice" onkeyup="searchTable('deviceTable', 'searchDevice')" placeholder="Gerät suchen...">
+
+    {% if devices %}
+    <table id="deviceTable">
+        <tr>
+            <th>#</th>
+            <th>Gerät</th>
+            <th>Aktion</th>
+        </tr>
+        {% for device in devices %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ device }}</td>
+            <td>
+                <form action="/delete_device" method="post" style="display:inline;">
+                    <input type="hidden" name="device" value="{{ device }}">
+                    <button type="submit">🗑️</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>Keine Geräte vorhanden.</p>
+    {% endif %}
+
+    <!-- Statistik -->
+    <h2>Statistik</h2>
+    <p>Anzahl Benutzer: <span class="{{ 'stat-red' if users|length == 0 else 'stat-green' }}">{{ users|length }}</span></p>
+    <p>Anzahl Geräte: <span class="{{ 'stat-red' if devices|length == 0 else 'stat-green' }}">{{ devices|length }}</span></p>
+
+    <!-- Mini-Suche Script -->
+    <script>
+        function searchTable(tableId, inputId) {
+            let input = document.getElementById(inputId);
+            let filter = input.value.toUpperCase();
+            let table = document.getElementById(tableId);
+            let tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                let td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    let txtValue = td.textContent || td.innerText;
+                    tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
